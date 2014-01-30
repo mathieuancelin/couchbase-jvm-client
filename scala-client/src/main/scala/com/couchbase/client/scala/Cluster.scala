@@ -1,6 +1,6 @@
 package com.couchbase.client.scala
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import com.couchbase.client.scala.bucket.Bucket
 
 /**
@@ -18,13 +18,13 @@ trait Cluster {
    * @param password the password of the bucket (defaults to "").
    * @return a Future containing the bucket reference.
    */
-  def openBucket(name: String = "default", password: String = ""): Future[Bucket]
+  def openBucket(name: String = "default", password: String = "")(implicit ec: ExecutionContext): Future[Bucket]
 
   /**
    * Disconnect from the cluster and close all opened buckets.
    *
    * @return a Future which is completed once disconnected.
    */
-  def disconnect(): Future[Unit]
+  def disconnect(implicit ec: ExecutionContext): Future[Unit]
 
 }

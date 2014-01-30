@@ -1,8 +1,3 @@
 package com.couchbase.client.scala.bucket
 
-/**
- * Created by michael on 30/01/14.
- */
-trait Document {
-
-}
+case class Document[T](id: String, content: Option[T], cas: Long, expiration: Int, groupId: String)
