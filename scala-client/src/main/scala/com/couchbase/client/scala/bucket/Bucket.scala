@@ -35,6 +35,10 @@ class SerialFormat(cl: ClassLoader) extends Format[AnyRef] {
   }
 }
 
+class RichFuture[T] extends Future[T] {
+    def endure(): Future[T] = ???
+}
+
 /**
  * Operations that can be performed against a bucket.
  */
