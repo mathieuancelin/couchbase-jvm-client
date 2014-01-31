@@ -18,7 +18,7 @@ trait Cluster {
    * @param password the password of the bucket (defaults to "").
    * @return a Future containing the bucket reference.
    */
-  def openBucket(name: String = "default", password: String = "")(implicit ec: ExecutionContext): Future[Bucket]
+  def openBucket(name: String = "default", password: String = "")(implicit ec: ExecutionContext): Bucket
 
   /**
    * Disconnect from the cluster and close all opened buckets.
