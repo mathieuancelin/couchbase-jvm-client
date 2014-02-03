@@ -35,40 +35,56 @@ class SerialFormat(cl: ClassLoader) extends Format[AnyRef] {
   }
 }
 
-class RichFuture[T] extends Future[T] {
-    def endure(): Future[T] = ???
-}
-
 /**
  * Operations that can be performed against a bucket.
  */
 trait Bucket {
 
-  def insert[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def insert[T](id: String, value: T, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def insert[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
+  def insert[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def insert[T](id: String, value: T, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def insert[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[TraversableOnce[Document[T]]]
 
-  def upsert[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def upsert[T](id: String, value: T, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def upsert[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
+  def upsert[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def upsert[T](id: String, value: T, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def upsert[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[TraversableOnce[Document[T]]]
 
-  def replace[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def replace[T](id: String, value: T, cas: Option[Long] = None, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def replace[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
+  def replace[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def replace[T](id: String, value: T, cas: Option[Long] = None, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def replace[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[TraversableOnce[Document[T]]]
 
-  def update[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def update[T](id: String, value: T, cas: Option[Long] = None, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def update[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
+  def update[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def update[T](id: String, value: T, cas: Option[Long] = None, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def update[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[TraversableOnce[Document[T]]]
 
-  def remove[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def remove[T](id: String, cas: Option[Long] = None, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def remove[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
+  def remove[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def remove[T](id: String, cas: Option[Long] = None, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def remove[T](documents: TraversableOnce[Document[T]])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[TraversableOnce[Document[T]]]
 
   def get[T](id: String, lock: Option[Int] = None, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
   def get[T](document: Document[T], lock: Option[Int] = None)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
   def get[T](documents: TraversableOnce[Document[T]], lock: Option[Int] = None)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
 
-  def endure[T](persistTo: PersistTo, replicateTo: ReplicateTo)(callback: Bucket => Unit)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Unit]
+  /**
+   *
+   * not sur it's useful as you can do something like the following with the same endure args for the current scope
+   *
+   * {{{
+   *    {
+   *        implicit val persist: PeristTo = ???
+   *        implicit val replicate: ReplicateTo = ???
+   *        implicit val ec: ExecutionContext = ???
+   *        implicit val format: Format[_] = ???
+   *
+   *        bucket.insert("...", ...)
+   *        bucket.insert("...", ...)
+   *        bucket.insert("...", ...)
+   *        bucket.insert("...", ...)
+   *        bucket.insert("...", ...)
+   *    }
+   * }}}
+   *
+   */
+  //def endure[T](persistTo: PersistTo, replicateTo: ReplicateTo)(callback: Bucket => Unit)(implicit ec: ExecutionContext): Future[Unit]
 
   def find[T](view: View)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
   def find[T](criteria: Criteria)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[TraversableOnce[Document[T]]]
@@ -76,14 +92,14 @@ trait Bucket {
   def unlock[T](document: Document[T])(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
   def unlock[T](id: String, cas: Long, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
 
-  def counter[T](document: Document[T], delta: Int, initial: Int = 0)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
-  def counter[T](id: String, delta: Int, initial: Int = 0, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[Document[T]]
+  def counter[T](document: Document[T], delta: Int, initial: Int = 0)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
+  def counter[T](id: String, delta: Int, initial: Int = 0, expiration: Int = -1, groupId: Option[String] = None )(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Document[T]]
 
   def view[T](designDocument: String, viewName: String, options: Option[ViewQueryOptions] = None)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[ViewResult]
   def query[T](query: String)(implicit ec: ExecutionContext, format: Format[T] = DefaultFormat): Future[QueryResult]
 
-  def flush: Future[Boolean]
-  def info: Future[BucketInfo]
+  def flush(implicit ec: ExecutionContext, persistTo: PersistTo = MEM, replicateTo: ReplicateTo = MEM): Future[Boolean]
+  def info(implicit ec: ExecutionContext): Future[BucketInfo]
 
   def insertDesignDocument(designDocument: DesignDocument, overwrite: Boolean = true)(implicit ec: ExecutionContext): Future[DesignDocument]
   def insertDesignDocument(name: String, content: String, overwrite: Boolean = true)(implicit ec: ExecutionContext): Future[DesignDocument]
